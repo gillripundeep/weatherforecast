@@ -17,8 +17,8 @@ uvicorn
 - Create a config.cfg file and position it at the same directory level as main.py. In this configuration file, set up a default profile and include your [Openweather API Key](https://openweathermap.org/api) and [Geopify API Key](https://www.geoapify.com/get-started-with-maps-api). The configuration should resemble the following example:
     ```
     [default]
-    open_weather_api_key = 70de8db65a4bec3c47fd0923ef76f20f
-    geoapify_api_key = 063151fe9a044c4ebeddbcf6cf4f9d5d
+    open_weather_api_key = 7XXXXXXXXXXXXXXXXXXXXXXXXXXXf
+    geoapify_api_key = 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXd
     ```
 - FastAPI uses ASGI servers to run your application. Uvicorn is a popular ASGI server that works well with FastAPI. Install them and other dependencies using pip:
     ```
