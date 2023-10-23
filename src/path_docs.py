@@ -1,3 +1,6 @@
+"""Open Docs API"""
+
+
 open_api_docs = {
     "openapi":"3.1.0",
     "info":{

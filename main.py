@@ -10,7 +10,7 @@ forecast for the inputted city or in general.
 import logging
 import datetime
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from src import Helper
 from src import CityData
@@ -42,15 +42,16 @@ def read_root():
             }
         }
 
-@app.post("/weatherforecast")
-def weatherforecast(data: CityData):
-    """Weather Forecast GET API"""
+@app.post("/weatherforecast", response_model=dict)
+def weather_forecast(data: CityData):
+    """Weather Forecast POST API"""
     try:
-        get_lat_long_data = helper.get_city_long_lat(data.city)
-        get_weather_data = helper.get_weather_forecast(
-            long=get_lat_long_data["longitude"],
-            lat=get_lat_long_data["latitude"]
-            )
-        return {"response": get_weather_data}
-    except Exception as errmsg:
-        return {"response":errmsg}
+        # Retrieve latitude and longitude data
+        city_data = helper.get_city_long_lat(data.city)
+        
+        # Get weather forecast using the retrieved coordinates
+        weather_data = helper.get_weather_forecast(lon=city_data["longitude"], lat=city_data["latitude"])
+        
+        return {"response": weather_data}
+    except Exception as err:
+        raise HTTPException(status_code=500, detail=f"An error occurred while fetching weather data: {str(err)}")
