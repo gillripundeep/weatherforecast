@@ -23,10 +23,8 @@ class Helper:
     def get_city_long_lat(self, city):
         """Fetch the Longitude and Latitude of Given City"""
         try:
-            self.logging.info(
-                f"Fetching longitude and latitude for the city: {city}")
+            self.logging.info(f"Fetching longitude and latitude for the city: {city}")
             geopify_url = GEOPIFY_URL.format(city=city, apikey=GEOPIFY_API_KEY)
-
             response = requests.get(geopify_url, timeout=5)
 
             if response.status_code == 200:
@@ -39,15 +37,15 @@ class Helper:
 
                 if latitude is not None and longitude is not None:
                     return {"latitude": latitude, "longitude": longitude}
+                self.logging.error(
+                    "BAD REQUEST: Latitude or longitude data is missing in the response"
+                    )
                 raise HTTPException(
                     status_code=400,
                     detail="BAD REQUEST: Latitude or longitude data is missing in the response")
-
             self.logging.error(
-                f"Request failed with status code {response.status_code}")
-            raise HTTPException(
-                status_code=response.status_code,
-                detail=f"Request failed with status code {response.status_code}")
+                f"Request failed with {response.status_code}: {response.json()['message']}")
+            raise HTTPException(status_code=response.status_code, detail=response.json()["message"])
 
         except requests.exceptions.RequestException as err:
             self.logging.error(f"Request failed with an exception: {str(err)}")
@@ -73,9 +71,10 @@ class Helper:
                 result = response.json()
                 return result
             self.logging.error(
-                f"Request failed with status code {response.status_code}")
+                f"Request failed with status code \
+                    {response.status_code}:{response.json()['message']}")
             raise HTTPException(
-                status_code=500, detail=f"Request failed with status code {response.status_code}")
+                status_code=response.status_code, detail=f"{response.json()['message']}")
 
         except requests.RequestException as err:
             self.logging.error(

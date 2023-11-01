@@ -32,6 +32,13 @@ uvicorn
 
 - FastAPI automatically generates interactive documentation for your API. Access it by visiting [Local Server Docs](http://127.0.0.1:8000/docs) in your web browser.
 
+## Formatting Code
+
+Using the folowing command, linting can be performed over python files
+```
+pylint $(git ls-files '*.py')
+```
+
 ## API DOCS
 
 ![Alt text](weather_forecast_api.png?raw=true "Weather Forecast API")
