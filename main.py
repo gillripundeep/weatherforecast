@@ -48,10 +48,10 @@ def weather_forecast(data: CityData):
     try:
         # Retrieve latitude and longitude data
         city_data = helper.get_city_long_lat(data.city)
-        
         # Get weather forecast using the retrieved coordinates
-        weather_data = helper.get_weather_forecast(lon=city_data["longitude"], lat=city_data["latitude"])
-        
+        weather_data = helper.get_weather_forecast(
+            lon=city_data["longitude"], lat=city_data["latitude"])
+
         return {"response": weather_data}
-    except Exception as err:
-        raise HTTPException(status_code=500, detail=f"An error occurred while fetching weather data: {str(err)}")
+    except HTTPException as err:
+        return err
